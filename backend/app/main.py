@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api import driver
+from app.api import driver,telemetry
 
 app = FastAPI(
     title="F1 Telemetry Dashboard API",
@@ -7,6 +7,8 @@ app = FastAPI(
 )
 
 app.include_router(driver.router)
+app.include_router(telemetry.router)
+
 
 @app.get("/")
 def root():

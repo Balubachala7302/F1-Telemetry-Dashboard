@@ -12,8 +12,8 @@ def create(telemetry:TelemetryCreate,db:Session=Depends(get_db)):
     return create_telemetry(db,telemetry)
 
 @router.get("/",response_model=list[TelemetryResponse])
-def get_all(db:Session=Depends(get_db)):
-    return get_telemetry(db)
+def get_all(driver_id:int | None = None,lap_number:int | None = None,skip:int=0,limit:int=100,db:Session=Depends(get_db)):
+    return get_telemetry(db,driver_id,lap_number,skip,limit)
 
 @router.get("/{telemetry_id}",response_model=TelemetryResponse)
 def get_one(telemetry_id:int,db:Session=Depends(get_db)):

@@ -10,8 +10,13 @@ def create_telemetry(db:Session,telemetry:TelemetryCreate):
     return db_telemetry
 
 
-def get_telemetry(db:Session):
-    return db.query(Telemetry).all()
+def get_telemetry(db:Session,driver_id:int | None = None,lap_number:int | None = None,skip:int=0,limit:int=100):
+    query=db.query(Telemetry)
+    if driver_id is not None:
+        query=query.filter(Telemetry.driver_id==driver_id)
+    if lap_number is not None:
+        query=query.filter(Telemetry.lap_number==lap_number)
+    return query.offset(skip).limit(limit).all()
 
 def get_telemetry_by_id(db:Session,telemetry_id:int):
     return db.query(Telemetry).filter(Telemetry.id==telemetry_id).first()

@@ -9,3 +9,5 @@ class Driver(Base):
     full_name=Column(String,nullable=False)
     team=Column(String)
     Nationality=Column(String)
+
+    telemetry=relationship("Telemetry",back_populates="driver")

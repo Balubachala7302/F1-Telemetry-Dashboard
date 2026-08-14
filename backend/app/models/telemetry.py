@@ -19,4 +19,4 @@ class Telemetry(Base):
 
     lap_time=Column(Float,nullable=True)
 
-    driver=relationship("Driver")
+    driver=relationship("Driver",back_populates="telemetry")

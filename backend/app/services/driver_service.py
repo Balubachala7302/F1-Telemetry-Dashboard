@@ -32,3 +32,20 @@ def delete_driver(db:Session,driver_id:int):
         db.delete(db_driver)
         db.commit()
     return db_driver
+
+def get_driver_by_summary(db:Session,driver_id:int):
+    from app.models.telemetry import Telemetry
+    telemetry=(db.query(Telemetry).filter(Telemetry.driver_id==driver_id).all())
+    if not telemetry:
+        return None
+    lap_times=[t.lap_time for t in telemetry if t.lap_time is not None]
+    speeds=[t.speed for t in telemetry]
+
+    return{
+        "driver_id":driver_id,
+        "total_laps":len(set(t.lap_number for t in telemetry)),
+        "fastest_lap":min(lap_times) if lap_times else None,
+        "top_speed":max(speeds) if speeds else None,
+        "avg_speed":sum(speeds)/len(speeds) if speeds else None,
+    }
+    

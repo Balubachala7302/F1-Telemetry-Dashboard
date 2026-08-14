@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.db.dependencies import get_db
 from app.schemas.driver import DriverCreate,DriverUpdate,DriverResponse
 from app.services.driver_service import create_driver,get_drivers,get_driver,update_driver,delete_driver
+from app.services.driver_service import get_driver_by_summary
 
 router=APIRouter(prefix="/drivers",tags=["Drivers"])
 
@@ -34,3 +35,13 @@ def delete(driver_id:int,db:Session=Depends(get_db)):
     if driver is None:
         raise HTTPException(status_code=404,detail="Driver not found")
     return {"message":"Driver deleted successfully"}
+
+@router.get("/{driver_id}/summary")
+def driver_summary(
+    driver_id:int,
+    db:Session=Depends(get_db)
+):
+    summary=get_driver_by_summary(db,driver_id)
+    if summary is None:
+        raise HTTPException(status_code=404,detail="Driver not found")
+    return summary

@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends,HTTPException
+from fastapi import APIRouter,Depends,HTTPException,UploadFile,File
 from sqlalchemy.orm import Session
 
 from app.db.dependencies import get_db
@@ -36,4 +36,14 @@ def delete(telemetry_id:int,db:Session=Depends(get_db)):
         raise HTTPException(status_code=404,detail="Telemetry not found")
     return {
         "message":"Telemetry deleted successfully"
+    }
+
+@router.post("/upload")
+async def upload_telemetry(file: UploadFile = File(...)):
+    contents = await file.read()
+
+    return {
+        "file_name":file.filename,
+        "message":"Telemetry file uploaded successfully",
+        "size": len(contents),
     }

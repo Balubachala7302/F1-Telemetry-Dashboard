@@ -2,6 +2,9 @@ import { useState } from "react";
 
 function App() {
   const [file, setFile] = useState<File | null>(null);
+  const handleAnalyze = () => {
+    console.log(file);
+  };
   return (
     <div className="dashboard">
       <header className="header">
@@ -28,7 +31,7 @@ function App() {
 
           {file && <p>Selected file: {file.name}</p>}
 
-          <button>Upload & Analyze</button>
+          <button onClick={handleAnalyze}>Upload & Analyze</button>
         </section>
       </main>
     </div>
